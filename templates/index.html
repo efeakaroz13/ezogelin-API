@@ -1,0 +1,60 @@
+<html>
+<head>
+    <title>Kentel API</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+
+
+</head>
+<body><br><br>
+    <div class="container">
+        <h2> Image and city API by Kentel</h2>
+        <p>Developer:Efe Akaröz</p>
+        <p>@8th April 2023</p>
+        <h2>Current Configuration</h2>
+        <p>Allowed files</p>
+        <ul>
+            {% for f in allowed_extensions %}
+                <li>*.{{f}}</li>
+            {% endfor %}
+        </ul>
+        <h2>Documentation</h2>
+        <p>This is the official documentation for this private fileserver. If you struggle with the instructions contact the developer.</p>
+        <h3>State, city, neighbourhood API</h3>
+        <p>API Endpoint:/api <code>GET</code></p>
+        <p>Arguments:</p>
+        <ul>
+            <li><code>key</code></li>
+            <li><code>city</code>(if you don't specify it, it will give a list of cities that you can pass in to this variable)</li>
+            <li><code>district</code>(You will enter one of the outputs of city and this will return you the neighbourhoods.)</li>
+            <li><code>nh</code>(Enter one of the results from district and this will output the streets.)</li>
+        </ul>
+        <p style="color:red">Note: You need to specify every argument if you specify new ones. For example, if you used city and you want to get district you need to use both of them next time.</p>
+
+        <h3>File upload and delete</h3>
+        <p>This is the documentation for file upload and deletion.</p>
+        <p>Endpoint - 1 :/upload <code>POST</code></p>
+        <p>Form data:</p>
+        <ul>
+            <li><code>file</code> Attach file to 'file'</li>
+        </ul>
+        <p>Response</p>
+        <code>
+            {<br>
+              "ctime": "Sat Apr  8 18:39:10 2023",<br>
+              "file": "r60f105w13o35jb33f35ibr.jpg",<br>
+              "time": 1680968350.141144<br>
+            }
+        </code>
+        <p>You can go to /static/-filename- to get the image back</p>
+
+        <br>
+        <p>Endpoint - 2 :/delete <code>DELETE</code></p>
+        <p>Just enter /delete/filename that is it</p>
+    </div>
+
+</body>
+</html>
