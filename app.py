@@ -3,8 +3,8 @@ Author:Efe Akaröz
 Date: 8th April 2023
 """
 
-
-from flask import Flask, render_template, request, abort
+import io
+from flask import Flask, render_template, request, abort,send_file,make_response
 import json
 import os
 import random
@@ -128,6 +128,29 @@ def apithing():
 
 @app.route("/static/scaler")
 def scaler():
-    return {"msg":"this is scaler"}
+    filename = request.args.get("filename")
+    if filename == None:
+        return {"SCC":False,"err":"Filename required"}
+    try:
+        img = cv2.imread('static/{}'.format(filename), cv2.IMREAD_UNCHANGED)
+    except:
+        return {"SCC":False,"err":"file not found or could not be opened by cv2"}
+
+    try:
+        scale_percent = int(request.args.get("scalePer"))
+    except:
+        scale_percent = 60
+    width = int(img.shape[1] * scale_percent / 100)
+    height = int(img.shape[0] * scale_percent / 100)
+    dim = (width, height)
+    resized = cv2.resize(img, dim, interpolation=cv2.INTER_AREA)
+    retval, buffer = cv2.imencode('.png', resized)
+    response = make_response(buffer.tobytes())
+    response.headers['Content-Type'] = 'image/png'
+    return response
+
+@app.route("/demo")
+def demoit():
+    return render_template("demo.html")
 if __name__ == "__main__":
   app.run(debug=True,port="2012")
