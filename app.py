@@ -25,6 +25,9 @@ CORS(app)
 con = sqlite3.connect("tr_adres.db", check_same_thread=False)
 cur =con.cursor()
 
+#Forgot to add it
+listNotWorking = []
+
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
