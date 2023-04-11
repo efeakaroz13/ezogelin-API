@@ -10,6 +10,7 @@ import os
 import random
 from werkzeug.utils import secure_filename
 import time
+import requests
 from flask_cors import CORS
 import sqlite3
 import cv2
