@@ -20,6 +20,11 @@ alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
             'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 
+app = Flask(__name__)
+CORS(app)
+con = sqlite3.connect("tr_adres.db", check_same_thread=False)
+cur =con.cursor()
+
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -90,10 +95,6 @@ def parselSorgu():
     page = getwithproxy(lat,long)
     return page
 
-app = Flask(__name__)
-CORS(app)
-con = sqlite3.connect("tr_adres.db", check_same_thread=False)
-cur =con.cursor()
 
 @app.route("/")
 def index():
