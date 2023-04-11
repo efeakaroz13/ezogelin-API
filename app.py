@@ -23,8 +23,72 @@ alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def getwithproxy(lat,long):
+    proxies = open("proxies.txt")
+    allReadlines = proxies.readlines()
+    for ar in allReadlines:
+        if ar.replace("\n","") in listNotWorking:
+            allReadlines.pop(allReadlines.index(ar))
+    ip_proxy = random.choice(allReadlines)
+    proxy = ip_proxy.replace("\n","")
+    proxyDict = {
+            "http":proxy,
+            "https":proxy,
+    }
+    try:
+
+        page = requests.get("https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{}/{}".format(lat,long),proxies=proxyDict)
+    except Exception as e :
+        return {"SCC":False,"err":"Invalid Proxy","err_detailed":str(e)}
+    try:
+        data = json.loads(page.content)
+    except:
+        listNotWorking.append(ip_proxy)
+    return data
 
 
+@app.route("/get_coordinates")
+def get_coordinates():
+    """
+    Format: City,District
+    """
+    search = request.args.get("q")
+    data = json.loads(open("data/final_tr.json","r").read())
+    if search == None:
+        return {"SCC":False,"msg":"You need to specify search"}
+    city = search.split(",")[0].strip()
+    try:
+        district = search.split(",")[1].strip()
+    except:
+        return {"SCC":False,"msg":"İlçe girin, şehir ismini merkez için yineleyin: Ankara,Ankara"}
+    allcities = list(data.keys())
+    for a in allcities:
+        al = a.lower()
+        if city.lower() == al:
+            alldistricts = data[a]
+            dkeys = list(alldistricts.keys())
+            for d in dkeys:
+                if district.lower() == d.lower():
+                    return alldistricts[d]
+
+            return data[a]
+    return {"SCC":False,"msg":"Sonuç bulunamadı"}
+
+@app.route("/demo/2")
+def second_demo():
+    return render_template("demo2.html")
+
+
+@app.route("/parsel_sorgu")
+def parselSorgu():
+    output = {}
+    lat = request.args.get("lat")
+    long = request.args.get("long")
+    if lat == None or long == None:
+        return {"SCC":False,"err":"Need to specify lat and long"}
+
+    page = getwithproxy(lat,long)
+    return page
 
 app = Flask(__name__)
 CORS(app)
