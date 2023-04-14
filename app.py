@@ -46,7 +46,7 @@ def getwithproxy(lat,long):
     }
     try:
 
-        page = requests.get("https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{}/{}".format(lat,long),proxies=proxyDict,verify=False)
+        page = requests.get("https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{}/{}".format(lat,long),verify=False)
     except Exception as e :
         return {"SCC":False,"err":"Invalid Proxy","err_detailed":str(e)}
     try:

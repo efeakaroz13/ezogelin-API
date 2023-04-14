@@ -18,6 +18,7 @@
     </head>
 
     <body>
+        
         <nav class="navbar navbar-light bg-light">
             <span class="navbar-brand mb-0 h1" style="margin-left:20px">Kentel MapDB Demo</span>
         </nav>
@@ -28,9 +29,16 @@
             <input type="text" placeholder="Enlem,Boylam" id="latlong"><button onclick="find_on_map_coordinates()">Haritada Bul</button> 
         </div>
         <br>
+
+        <h2>Sonuçlar</h2>
+        <div id="sonuc"></div>
+
         <ul class="list-group" id="log">
             <li class="list-group-item">Konum Listesi</li>
         </ul>
+
+
+    
 
 <style>
 .API{
@@ -38,12 +46,23 @@
     margin-top:30px;
 
 }
-i{
+h2,i{
     margin-left:30px;
 }
 .btn{
     margin-left:30px
 
+}
+#popup{
+    width:100%;
+    position: fixed;
+    top:0px;
+    height: 100vh;
+    left:0px;
+    background: white;
+}
+#sonuc{
+    margin-left:30px;
 }
 
 </style>
@@ -127,13 +146,43 @@ function find_on_map_coordinates(){
         .openPopup();
     logit(lat,lng,"Özel Konum")
 }
-function checkA(lat,lng){
-    try{
 
+outputData = {}
+
+function checkA(lat,lng){
+    dataname = lat+""+lng;
+    document.getElementById("sonuc").innerHTML = ""
+    if (outputData.dataname != undefined)
+    {
+        allp = outputData.dataname
+        
+        allpKeys = Object.keys(allp)
+        for (var i = allpKeys.length - 1; i >= 0; i--) {
+            current = allpKeys[i]
+            sonuc = document.getElementById("sonuc")
+
+            sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
+
+        }
+
+    }else{
+        $.getJSON("/parsel_sorgu?lat="+lat+"&"+"long="+lng,function(data){
+            allp = data.properties
+            
+            outputData.dataname = allp;
+            allpKeys = Object.keys(allp)
+            for (var i = allpKeys.length - 1; i >= 0; i--) {
+                current = allpKeys[i]
+                sonuc = document.getElementById("sonuc")
+
+                sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
+
+            }
+        })
     }
-    $.getJSON("/parsel_sorgu?lat="+lat+"&"+"long="+lng,function(data){
-        console.log(data)
-    })
+    
+    
+    
 }
 
 
@@ -144,6 +193,8 @@ L.marker([51.5, -0.09]).addTo(map)
     .openPopup();
 */
         </script>
+
+
     </body>
 
 </html>
