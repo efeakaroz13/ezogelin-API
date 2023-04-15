@@ -54,7 +54,7 @@ def getwithproxy(lat,long):
     }
     try:
 
-        page = requests.get("https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{}/{}".format(lat,long),verify=False)
+        page = requests.get("http://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{}/{}".format(lat,long),verify=False)
     except Exception as e :
         return {"SCC":False,"err":"Invalid Proxy","err_detailed":str(e)}
     try:
@@ -242,7 +242,7 @@ def getCities():
 @app.route("/getDistricts/<province>")
 def getDistricts_(province):
     listOutput = []
-    page = requests.get("https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/IdariYapi/ilceliste/"+province,verify=False)
+    page = requests.get("http://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/IdariYapi/ilceliste/"+province,verify=False)
     output = json.loads(page.content)
     output = output["features"]
     for o in output:
@@ -252,7 +252,7 @@ def getDistricts_(province):
 
 @app.route("/nh/<district>")
 def getnh(district):
-    page = requests.get("https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/idariYapi/mahalleListe/"+district,verify=False)
+    page = requests.get("http://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/idariYapi/mahalleListe/"+district,verify=False)
     listOutput = []
 
     output = json.loads(page.content)
@@ -264,7 +264,7 @@ def getnh(district):
 @app.route("/idari/<id_>/<ada_>/<parsel>")
 def idariSorgu(id_,ada_,parsel):
     try:
-        page = requests.get(f"https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{id_}/{ada_}/{parsel}",verify=False)
+        page = requests.get(f"http://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{id_}/{ada_}/{parsel}",verify=False)
     except Exception as e :
         print(e)
         return {"SCC":False,"err":"Couldn't load page"}
