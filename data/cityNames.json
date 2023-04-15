@@ -1,0 +1,326 @@
+[
+    {
+      "id": 23,
+      "text": "Adana"
+    },
+    {
+      "id": 24,
+      "text": "Adıyaman"
+    },
+    {
+      "id": 25,
+      "text": "Afyonkarahisar"
+    },
+    {
+      "id": 26,
+      "text": "A\u011fri"
+    },
+    {
+      "id": 90,
+      "text": "Aksaray"
+    },
+    {
+      "id": 27,
+      "text": "Amasya"
+    },
+    {
+      "id": 28,
+      "text": "Ankara"
+    },
+    {
+      "id": 29,
+      "text": "Antalya"
+    },
+    {
+      "id": 97,
+      "text": "Ardahan"
+    },
+    {
+      "id": 30,
+      "text": "Artvin"
+    },
+    {
+      "id": 31,
+      "text": "Aydın"
+    },
+    {
+      "id": 32,
+      "text": "Balikesir"
+    },
+    {
+      "id": 96,
+      "text": "Bartın"
+    },
+    {
+      "id": 94,
+      "text": "Batman"
+    },
+    {
+      "id": 91,
+      "text": "Bayburt"
+    },
+    {
+      "id": 33,
+      "text": "Bilecik"
+    },
+    {
+      "id": 34,
+      "text": "Bing\u00f6l"
+    },
+    {
+      "id": 35,
+      "text": "Bitlis"
+    },
+    {
+      "id": 36,
+      "text": "Bolu"
+    },
+    {
+      "id": 37,
+      "text": "Burdur"
+    },
+    {
+      "id": 38,
+      "text": "Bursa"
+    },
+    {
+      "id": 39,
+      "text": "\u00c7anakkale"
+    },
+    {
+      "id": 40,
+      "text": "\u00c7ankırı"
+    },
+    {
+      "id": 41,
+      "text": "\u00c7orum"
+    },
+    {
+      "id": 42,
+      "text": "Denizli"
+    },
+    {
+      "id": 43,
+      "text": "Diyarbakır"
+    },
+    {
+      "id": 103,
+      "text": "D\u00fczce"
+    },
+    {
+      "id": 44,
+      "text": "Edirne"
+    },
+    {
+      "id": 45,
+      "text": "Elazı\u011f"
+    },
+    {
+      "id": 46,
+      "text": "Erzincan"
+    },
+    {
+      "id": 47,
+      "text": "Erzurum"
+    },
+    {
+      "id": 48,
+      "text": "Eski\u015fehir"
+    },
+    {
+      "id": 49,
+      "text": "Gaziantep"
+    },
+    {
+      "id": 50,
+      "text": "Giresun"
+    },
+    {
+      "id": 51,
+      "text": "G\u00fcm\u00fc\u015fhane"
+    },
+    {
+      "id": 52,
+      "text": "Hakkari"
+    },
+    {
+      "id": 53,
+      "text": "Hatay"
+    },
+    {
+      "id": 98,
+      "text": "I\u011fdır"
+    },
+    {
+      "id": 54,
+      "text": "Isparta"
+    },
+    {
+      "id": 56,
+      "text": "İstanbul"
+    },
+    {
+      "id": 57,
+      "text": "İzmir"
+    },
+    {
+      "id": 68,
+      "text": "Kahramanmara\u015f"
+    },
+    {
+      "id": 100,
+      "text": "Karab\u00fck"
+    },
+    {
+      "id": 92,
+      "text": "Karaman"
+    },
+    {
+      "id": 58,
+      "text": "Kars"
+    },
+    {
+      "id": 59,
+      "text": "Kastamonu"
+    },
+    {
+      "id": 60,
+      "text": "Kayseri"
+    },
+    {
+      "id": 101,
+      "text": "Kilis"
+    },
+    {
+      "id": 93,
+      "text": "Kırıkkale"
+    },
+    {
+      "id": 61,
+      "text": "Kırklareli"
+    },
+    {
+      "id": 62,
+      "text": "Kır\u015fehir"
+    },
+    {
+      "id": 63,
+      "text": "Kocaeli"
+    },
+    {
+      "id": 64,
+      "text": "Konya"
+    },
+    {
+      "id": 65,
+      "text": "K\u00fctahya"
+    },
+    {
+      "id": 66,
+      "text": "Malatya"
+    },
+    {
+      "id": 67,
+      "text": "Manisa"
+    },
+    {
+      "id": 69,
+      "text": "Mardin"
+    },
+    {
+      "id": 55,
+      "text": "Mersin"
+    },
+    {
+      "id": 70,
+      "text": "Mu\u011fla"
+    },
+    {
+      "id": 71,
+      "text": "Mu\u015f"
+    },
+    {
+      "id": 72,
+      "text": "Nev\u015fehir"
+    },
+    {
+      "id": 73,
+      "text": "Ni\u011fde"
+    },
+    {
+      "id": 74,
+      "text": "Ordu"
+    },
+    {
+      "id": 102,
+      "text": "Osmaniye"
+    },
+    {
+      "id": 75,
+      "text": "Rize"
+    },
+    {
+      "id": 76,
+      "text": "Sakarya"
+    },
+    {
+      "id": 77,
+      "text": "Samsun"
+    },
+    {
+      "id": 85,
+      "text": "\u015eanlıurfa"
+    },
+    {
+      "id": 78,
+      "text": "Siirt"
+    },
+    {
+      "id": 79,
+      "text": "Sinop"
+    },
+    {
+      "id": 95,
+      "text": "\u015eırnak"
+    },
+    {
+      "id": 80,
+      "text": "Sivas"
+    },
+    {
+      "id": 81,
+      "text": "Tekirda\u011f"
+    },
+    {
+      "id": 82,
+      "text": "Tokat"
+    },
+    {
+      "id": 83,
+      "text": "Trabzon"
+    },
+    {
+      "id": 84,
+      "text": "Tunceli"
+    },
+    {
+      "id": 86,
+      "text": "U\u015fak"
+    },
+    {
+      "id": 87,
+      "text": "Van"
+    },
+    {
+      "id": 99,
+      "text": "Yalova"
+    },
+    {
+      "id": 88,
+      "text": "Yozgat"
+    },
+    {
+      "id": 89,
+      "text": "Zonguldak"
+    }
+  ]

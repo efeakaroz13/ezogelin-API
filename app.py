@@ -22,7 +22,7 @@ socks.set_default_proxy(socks.SOCKS5, "45.155.125.74", 1447, True, 'prox1','7ft3
 socket.socket = socks.socksocket
 
 
-print(page.content)
+
 config = json.loads(open("config.json", "r").read())
 ALLOWED_EXTENSIONS = config["allowed_extensions"]
 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
@@ -234,13 +234,10 @@ def demoit():
 
 @app.route("/get_cities")
 def getCities():
-    listOutput = []
-    page = requests.get("https://parselsorgu.tkgm.gov.tr/app/modules/administrativeQuery/data/ilListe.json")
-    output = json.loads(page.content)
-    output = output["features"]
-    for o in output:
-        listOutput.append(o["properties"])
-    return listOutput 
+
+    page = open("data/cityNames.json","r")
+    output = json.loads(page.read())
+    return output
 
 @app.route("/getDistricts/<province>")
 def getDistricts_(province):
