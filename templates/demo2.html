@@ -184,6 +184,38 @@ function checkA(lat,lng){
     
     
 }
+function checkB(id_,ada,parsel) {
+    dataname = lat+""+lng;
+    document.getElementById("sonuc").innerHTML = ""
+    if (outputData.dataname != undefined)
+    {
+        allp = outputData.dataname
+        
+        allpKeys = Object.keys(allp)
+        for (var i = allpKeys.length - 1; i >= 0; i--) {
+            current = allpKeys[i]
+            sonuc = document.getElementById("sonuc")
+
+            sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
+
+        }
+
+    }else{
+        $.getJSON("/idari/"+id_+"/"+ada"/"+parsel,function(data){
+            allp = data.properties
+            
+            outputData.dataname = allp;
+            allpKeys = Object.keys(allp)
+            for (var i = allpKeys.length - 1; i >= 0; i--) {
+                current = allpKeys[i]
+                sonuc = document.getElementById("sonuc")
+
+                sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
+
+            }
+        })
+    }
+}
 
 
 
