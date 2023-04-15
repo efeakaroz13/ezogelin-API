@@ -221,5 +221,51 @@ def scaler():
 @app.route("/demo")
 def demoit():
     return render_template("demo.html")
+
+
+
+@app.route("/get_cities")
+def getCities():
+    listOutput = []
+    page = requests.get("https://parselsorgu.tkgm.gov.tr/app/modules/administrativeQuery/data/ilListe.json")
+    output = json.loads(page.content)
+    output = output["features"]
+    for o in output:
+        listOutput.append(o["properties"])
+    return listOutput 
+
+@app.route("/getDistricts/<province>")
+def getDistricts_(province):
+    listOutput = []
+    page = requests.get("https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/IdariYapi/ilceliste/"+province)
+    output = json.loads(page.content)
+    output = output["features"]
+    for o in output:
+        listOutput.append(o["properties"])
+
+    return listOutput
+
+@app.route("/nh/<district>")
+def getnh(district):
+    page = requests.get("https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/idariYapi/mahalleListe/"+district)
+    listOutput = []
+
+    output = json.loads(page.content)
+    output = output["features"]
+    for o in output:
+        listOutput.append(o["properties"])
+    return listOutput
+
+@app.route("/idari/<id_>/<ada_>/<parsel>")
+def idariSorgu(id_,ada_,parsel):
+    try:
+        page = requests.get(f"https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{id_}/{ada}/{parsel}")
+    except:
+        return {"SCC":False,"err":"Couldn't load page"}
+    
+    return json.loads(page.content)
+    
+
+
 if __name__ == "__main__":
   app.run(debug=True,port="2012")
