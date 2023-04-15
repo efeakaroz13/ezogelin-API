@@ -14,7 +14,15 @@ import requests
 from flask_cors import CORS
 import sqlite3
 import cv2
+import socks
+import socket
 
+
+socks.set_default_proxy(socks.SOCKS5, "45.155.125.74", 1447, True, 'prox1','7ft339lWrI')
+socket.socket = socks.socksocket
+
+
+print(page.content)
 config = json.loads(open("config.json", "r").read())
 ALLOWED_EXTENSIONS = config["allowed_extensions"]
 alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
