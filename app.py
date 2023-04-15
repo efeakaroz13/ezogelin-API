@@ -259,8 +259,9 @@ def getnh(district):
 @app.route("/idari/<id_>/<ada_>/<parsel>")
 def idariSorgu(id_,ada_,parsel):
     try:
-        page = requests.get(f"https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{id_}/{ada}/{parsel}")
-    except:
+        page = requests.get(f"https://cbsapi.tkgm.gov.tr/megsiswebapi.v3/api/parsel/{id_}/{ada_}/{parsel}")
+    except Exception as e :
+        print(e)
         return {"SCC":False,"err":"Couldn't load page"}
     
     return json.loads(page.content)

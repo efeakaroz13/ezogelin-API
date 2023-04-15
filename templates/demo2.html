@@ -26,7 +26,9 @@
         
         <div class="API">
             <input type="text" placeholder="Şehir,İlçe" id="entry"><button onclick="find_on_map()">Haritada Bul</button>
-            <input type="text" placeholder="Enlem,Boylam" id="latlong"><button onclick="find_on_map_coordinates()">Haritada Bul</button> 
+            <input type="text" placeholder="Enlem,Boylam" id="latlong"><button onclick="find_on_map_coordinates()">Haritada Bul</button><br>
+            Idari: <select name="" id="cities" onchange="getDistricts()"></select><select onchange="getnh()" name="" id="districts"></select><select id="nh"></select>
+            <input type="text" id="ada" placeholder="Ada"><input type="text" id="parsel"placeholder="Parsel"><button onclick="checkB()"> Sorgula</button>
         </div>
         <br>
 
@@ -184,8 +186,12 @@ function checkA(lat,lng){
     
     
 }
-function checkB(id_,ada,parsel) {
-    dataname = lat+""+lng;
+function checkB() {
+    id_ = document.getElementById("nh").value
+    ada = document.getElementById("ada").value;
+    parsel = document.getElementById("parsel").value;
+
+    dataname = id_+""+ada+parsel;
     document.getElementById("sonuc").innerHTML = ""
     if (outputData.dataname != undefined)
     {
@@ -201,7 +207,7 @@ function checkB(id_,ada,parsel) {
         }
 
     }else{
-        $.getJSON("/idari/"+id_+"/"+ada"/"+parsel,function(data){
+        $.getJSON("/idari/"+id_+"/"+ada+"/"+parsel,function(data){
             allp = data.properties
             
             outputData.dataname = allp;
@@ -217,8 +223,63 @@ function checkB(id_,ada,parsel) {
     }
 }
 
+function LoadCities(){
+    $.getJSON("/get_cities",function(data){
+        document.getElementById("cities").innerHTML = ""
+        for (let d = 0; d < data.length; d++) {
+            const element = data[d];
+            document.getElementById("cities").innerHTML= document.getElementById("cities").innerHTML+"<option value='"+element.id+"' id='"+element.id+"'>"+element.text+"</option>"
+            
+        }
+    })
+}
+LoadCities()
+city = ""
+function getDistricts(){
+    city1 = document.getElementById("cities")
+    document.getElementById("districts").innerHTML = ""
+    $.getJSON("/getDistricts/"+city1.value,function(districts){
+        city = document.getElementById(document.getElementById("cities").value).innerHTML;
+        entry = city+","+city;
+        for (let district = 0; district < districts.length; district++) {
+            const element = districts[district];
+            document.getElementById("districts").innerHTML = document.getElementById("districts").innerHTML +"<option value='"+element.id+"' id='"+element.id+"'>"+element.text+"</option>"
+            
+        }
+        $.getJSON("/get_coordinates?q="+entry,function(data){
+            
+            lat = parseFloat(data.lat);
+            lon = parseFloat(data.lng);
+            map.setView([lat,lon],12);
+            
+        })
+    })
+}
+function getnh(){
 
+    document.getElementById("nh").innerHTML = ""
+    district1 = document.getElementById("districts")
 
+    $.getJSON("/nh/"+district1.value,function(districts){
+
+        district = document.getElementById(document.getElementById("districts").value).innerHTML
+        entry = city+","+district;
+        console.log()
+        for (let district = 0; district < districts.length; district++) {
+            const element = districts[district];
+            document.getElementById("nh").innerHTML = document.getElementById("nh").innerHTML +"<option value='"+element.id+"' id='"+element.id+"'>"+element.text+"</option>"
+            
+        }
+        console.log(entry)
+        $.getJSON("/get_coordinates?q="+entry,function(data){
+            
+            lat = parseFloat(data.lat);
+            lon = parseFloat(data.lng);
+            map.setView([lat,lon],12);
+            
+        })
+    })
+}
 /*
 L.marker([51.5, -0.09]).addTo(map)
     .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
