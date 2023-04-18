@@ -1,0 +1,75 @@
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #sonuc * {
+    visibility: visible;
+  }
+  #sonuc {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+body{
+    font-family: 'Schibsted Grotesk', sans-serif;
+}
+.API{
+    text-align:center;
+    margin-top:30px;
+
+}
+h2,i{
+    margin-left:30px;
+}
+.btn{
+    margin-left:30px
+
+}
+#popup{
+    width:100%;
+    position: fixed;
+    top:0px;
+    height: 100vh;
+    left:0px;
+    background: white;
+}
+#sonuc{
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    height: 100vh;
+    top:0px;
+    left:0px;
+    background: #fff;
+
+}
+
+.area-tooltip {
+    background: #363636;
+    background: rgba(0,0,0,0.5);
+    border: none;
+    color: #f8d5e4;
+}
+
+
+
+select{
+    width:100px;
+    border:1px solid #000;
+    border-radius:2px;
+    padding-left:10px;
+    margin-right: 5px;
+    height:30px;
+}
+
+
+input{
+    width:100px;
+    border:1px solid #000;
+    border-radius:2px;
+    padding-left:10px;
+    margin-right: 5px;
+
+    height: 30px;
+}

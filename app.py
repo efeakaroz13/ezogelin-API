@@ -270,7 +270,7 @@ def idariSorgu(id_,ada_,parsel):
         return {"SCC":False,"err":"Couldn't load page"}
     
     return json.loads(page.content)
-    
+
 
 
 if __name__ == "__main__":

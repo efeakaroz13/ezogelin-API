@@ -13,313 +13,58 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
         <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/sorgula.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk&display=swap" rel="stylesheet">
 
         
     </head>
 
     <body>
         
-        <nav class="navbar navbar-light bg-light">
+        <nav class="navbar navbar-dark bg-primary">
             <span class="navbar-brand mb-0 h1" style="margin-left:20px">Kentel MapDB Demo</span>
         </nav>
         <div id="map" style="width:100%;height:85vh"></div>
         
-        <div class="API">
+        <div style="display: none">
             <input type="text" placeholder="Şehir,İlçe" id="entry"><button onclick="find_on_map()">Haritada Bul</button>
             <input type="text" placeholder="Enlem,Boylam" id="latlong"><button onclick="find_on_map_coordinates()">Haritada Bul</button><br>
+            
+        </div>
+        <div class="API">
             Idari: <select name="" id="cities" onchange="getDistricts()"></select><select onchange="getnh()" name="" id="districts"></select><select id="nh"></select>
-            <input type="text" id="ada" placeholder="Ada"><input type="text" id="parsel"placeholder="Parsel"><button onclick="checkB()"> Sorgula</button>
+            <input type="text" id="ada" placeholder="Ada"><input type="text" id="parsel"placeholder="Parsel"><button onclick="checkB()" class="btn btn-outline-primary"> Sorgula</button>
         </div>
         <br>
 
-        <h2>Sonuçlar</h2>
-        <div id="sonuc"></div>
 
-        <ul class="list-group" id="log">
+        <div id="sonuc" style="display: none">
+            <center>
+                <div class="card" style="width:70%;position:relative;">
+                    <button style="position:fixed;left:10px;top:10px;background:none;border:0px;" onclick="openPopup()">X</button>
+                    <div class="card-img-top" id="minMap" style="width:100%;height:500px"></div>
+                    <div class="card-body">
+                        <h5>Sorgu Sonuçları</h5>
+                        <p class="card-text" id="sonucText"></p>
+                    </div>
+
+                </div>
+            </center>
+        </div>
+
+
+        <ul class="list-group" style="display: none" id="log">
             <li class="list-group-item">Konum Listesi</li>
         </ul>
 
 
     
 
-<style>
-.API{
-    text-align:center;
-    margin-top:30px;
-
-}
-h2,i{
-    margin-left:30px;
-}
-.btn{
-    margin-left:30px
-
-}
-#popup{
-    width:100%;
-    position: fixed;
-    top:0px;
-    height: 100vh;
-    left:0px;
-    background: white;
-}
-#sonuc{
-    margin-left:30px;
-}
-
-.area-tooltip {
-            background: #363636;
-            background: rgba(0,0,0,0.5);
-            border: none;
-            color: #f8d5e4;
-        }
-</style>
-        <script>
-        
-var map = L.map('map');
-map.setView([39.478, 34.349], 6);
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
 
 
-
-
-//Current location with geolocation API
-const options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0,
-};
-var greenIcon = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-function success(pos) {
-  const crd = pos.coords;
-
-  console.log("Your current position is:");
-  console.log(`Latitude : ${crd.latitude}`);
-  console.log(`Longitude: ${crd.longitude}`);
-  console.log(`More or less ${crd.accuracy} meters.`);
-    L.marker([crd.latitude,crd.longitude],{icon:greenIcon}).addTo(map)
-    .bindPopup("Mevcut Konum")
-    .openPopup();
-  logit(crd.latitude,crd.longitude,"Mevcut Konum");
-}
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-
-navigator.geolocation.getCurrentPosition(success, error, options);
-
-
-
-
-
-function logit(lat,lng,name){
-    lat = parseFloat(lat)
-    lng = parseFloat(lng)
-    document.getElementById("log").innerHTML = document.getElementById("log").innerHTML+"<li class='list-group-item'>"+name+"<i style='color:gray;font-size:15px' >"+lat+","+lng+"</i>"+ "<button onclick='checkA("+lat+","+lng+")' class='btn btn light'>Sorgula</button><button class='btn btn-light' onclick='findInMap("+lat+","+lng+")'>Haritada göster</button></li>" 
-}
-function findInMap(lat,lng){
-    map.setView([lat,lng],18);
-}
-function find_on_map(){
-    entry = document.getElementById("entry").value
-    $.getJSON("/get_coordinates?q="+entry,function(data){
-        console.log(data)
-        lat = parseFloat(data.lat);
-        lon = parseFloat(data.lng);
-        map.setView([lat,lon],12);
-        L.marker([lat,lon]).addTo(map)
-            .bindPopup(data.admin_name+","+data.city)
-            .openPopup();
-        logit(lat,lon,data.admin_name+","+data.city)
-    })
-}
-function find_on_map_coordinates(){
-    query = document.getElementById("latlong").value;
-    lat = parseFloat(query.split(",")[0])
-    lng = parseFloat(query.split(",")[1])
-    map.setView([lat,lng],15)
-    L.marker([lat,lng]).addTo(map)
-        .bindPopup(lat+","+lng+" Özel Konum")
-        .openPopup();
-    logit(lat,lng,"Özel Konum")
-}
-
-outputData = {}
-
-function checkA(lat,lng){
-    dataname = lat+""+lng;
-    document.getElementById("sonuc").innerHTML = ""
-    if (outputData.dataname != undefined)
-    {
-        allp = outputData.dataname
-        
-        allpKeys = Object.keys(allp)
-        for (var i = allpKeys.length - 1; i >= 0; i--) {
-            current = allpKeys[i]
-            sonuc = document.getElementById("sonuc")
-
-            sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
-
-        }
-
-    }else{
-        $.getJSON("/parsel_sorgu?lat="+lat+"&"+"long="+lng,function(data){
-            allp = data.properties
-            
-            outputData.dataname = allp;
-            allpKeys = Object.keys(allp)
-            coordinates = data.geometry["coordinates"][0]
-            coordinates2 = []
-            for (let c = 0; c < coordinates.length; c++) {
-                const element = coordinates[c];
-                elem2 = element.reverse();
-                coordinates2.push(elem2);
-                
-            }
-            var polygon = L.polygon([
-                coordinates
-            ]).addTo(map);
-
-            
-
-            findInMap(lat,lng)
-            for (var i = allpKeys.length - 1; i >= 0; i--) {
-                current = allpKeys[i]
-                sonuc = document.getElementById("sonuc")
-
-                sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
-
-            }
-        })
-    }
-    
-    
-    
-}
-function checkB() {
-    id_ = document.getElementById("nh").value
-    ada = document.getElementById("ada").value;
-    parsel = document.getElementById("parsel").value;
-
-    dataname = id_+""+ada+parsel;
-    document.getElementById("sonuc").innerHTML = ""
-    if (outputData.dataname != undefined)
-    {
-        allp = outputData.dataname
-        
-        allpKeys = Object.keys(allp)
-        for (var i = allpKeys.length - 1; i >= 0; i--) {
-            current = allpKeys[i]
-            sonuc = document.getElementById("sonuc")
-
-            sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
-
-        }
-
-    }else{
-        $.getJSON("/idari/"+id_+"/"+ada+"/"+parsel,function(data){
-            allp = data.properties
-            
-            outputData.dataname = allp;
-            allpKeys = Object.keys(allp)
-            coordinates2 = []
-            for (let c = 0; c < coordinates.length; c++) {
-                const element = coordinates[c];
-                elem2 = element.reverse();
-                coordinates2.push(elem2);
-                
-            }
-            var polygon = L.polygon([
-                coordinates
-            ]).addTo(map);
-            findInMap(coordinates2[0])
-            for (var i = allpKeys.length - 1; i >= 0; i--) {
-                current = allpKeys[i]
-                sonuc = document.getElementById("sonuc")
-
-                sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
-
-            }
-        })
-    }
-}
-
-function LoadCities(){
-    $.getJSON("/get_cities",function(data){
-        document.getElementById("cities").innerHTML = ""
-        for (let d = 0; d < data.length; d++) {
-            const element = data[d];
-            document.getElementById("cities").innerHTML= document.getElementById("cities").innerHTML+"<option value='"+element.id+"' id='"+element.id+"'>"+element.text+"</option>"
-            
-        }
-    })
-}
-LoadCities()
-city = ""
-function getDistricts(){
-    city1 = document.getElementById("cities")
-    document.getElementById("districts").innerHTML = ""
-    $.getJSON("/getDistricts/"+city1.value,function(districts){
-        city = document.getElementById(document.getElementById("cities").value).innerHTML;
-        entry = city+","+city;
-        for (let district = 0; district < districts.length; district++) {
-            const element = districts[district];
-            document.getElementById("districts").innerHTML = document.getElementById("districts").innerHTML +"<option value='"+element.id+"' id='"+element.id+"'>"+element.text+"</option>"
-            
-        }
-        $.getJSON("/get_coordinates?q="+entry,function(data){
-            
-            lat = parseFloat(data.lat);
-            lon = parseFloat(data.lng);
-            map.setView([lat,lon],12);
-            
-        })
-    })
-}
-function getnh(){
-
-    document.getElementById("nh").innerHTML = ""
-    district1 = document.getElementById("districts")
-
-    $.getJSON("/nh/"+district1.value,function(districts){
-
-        district = document.getElementById(document.getElementById("districts").value).innerHTML
-        entry = city+","+district;
-        console.log()
-        for (let district = 0; district < districts.length; district++) {
-            const element = districts[district];
-            document.getElementById("nh").innerHTML = document.getElementById("nh").innerHTML +"<option value='"+element.id+"' id='"+element.id+"'>"+element.text+"</option>"
-            
-        }
-        console.log(entry)
-        $.getJSON("/get_coordinates?q="+entry,function(data){
-            
-            lat = parseFloat(data.lat);
-            lon = parseFloat(data.lng);
-            map.setView([lat,lon],12);
-            
-        })
-    })
-}
-/*
-L.marker([51.5, -0.09]).addTo(map)
-    .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-    .openPopup();
-*/
-        </script>
-
-
+    <script type="text/javascript" src="/static/map.js"></script>
     </body>
 
 </html>
