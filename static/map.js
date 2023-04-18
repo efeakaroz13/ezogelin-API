@@ -1,3 +1,5 @@
+
+
 var map = L.map('map');
 map.setView([39.478, 34.349], 6);
 
@@ -5,11 +7,8 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '<a href="https://github.com/efeakaroz13">Efe Akaröz</a> <img src="https://avatars.githubusercontent.com/u/69296379?v=4" width="10">'
 }).addTo(map);
 
-var map2 = L.map('minMap');
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '<a href="https://github.com/efeakaroz13">Efe Akaröz</a> <img src="https://avatars.githubusercontent.com/u/69296379?v=4" width="10">'
-}).addTo(map2);
+
 
 
 //Current location with geolocation API
@@ -55,7 +54,14 @@ function logit(lat,lng,name){
     document.getElementById("log").innerHTML = document.getElementById("log").innerHTML+"<li class='list-group-item'>"+name+"<i style='color:gray;font-size:15px' >"+lat+","+lng+"</i>"+ "<button onclick='checkA("+lat+","+lng+")' class='btn btn light'>Sorgula</button><button class='btn btn-light' onclick='findInMap("+lat+","+lng+")'>Haritada göster</button></li>" 
 }
 function findInMap(lat,lng){
-    map.setView([lat,lng],18);
+    try{
+        map2.setView([lat,lng],15);
+    }catch{
+        null
+    }
+    
+    map.setView([lat,lng],15);
+    
 }
 function find_on_map(){
     entry = document.getElementById("entry").value
@@ -133,6 +139,9 @@ function checkA(lat,lng){
     
     
 }
+oldada = "0"
+oldparsel = "0"
+olid = "0"
 function checkB() {
     id_ = document.getElementById("nh").value
     ada = document.getElementById("ada").value;
@@ -142,22 +151,50 @@ function checkB() {
     document.getElementById("sonucText").innerHTML = ""
     if (outputData.dataname != undefined)
     {
-        allp = outputData.dataname
+        allp = outputData.dataname.properties
+        open_Popup()
+        console.log("data used again")
+
+
+        coordinates = outputData.dataname.geometry["coordinates"][0]
+        coordinates2 = coordinates
+
         
+        try{
+
+            findInMap(coordinates2[0][0],coordinates2[0][1])
+
+            
+        }catch{
+            try{
+                findInMap(coordinates2[1][0],coordinates2[1][1])
+
+                console.log(coordinates2[1]);
+            }catch{
+                null
+            }
+            
+        }
         allpKeys = Object.keys(allp)
         for (var i = allpKeys.length - 1; i >= 0; i--) {
             current = allpKeys[i]
             sonuc = document.getElementById("sonucText")
+            if (current.includes("Id") != true) {
+                sonuc.innerHTML = sonuc.innerHTML + "<p class='result_'>"+current+":"+allp[current]+"</p>"
+            }
 
-            sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
+            
 
         }
 
     }else{
         $.getJSON("/idari/"+id_+"/"+ada+"/"+parsel,function(data){
+            oldada = ada 
+            oldparsel = parsel 
+            oldid = id_
             allp = data.properties
             
-            outputData.dataname = allp;
+            outputData.dataname = data;
             allpKeys = Object.keys(allp)
             coordinates = data.geometry["coordinates"][0]
             coordinates2 = []
@@ -167,17 +204,19 @@ function checkB() {
                 coordinates2.push(elem2);
                 
             }
+            open_Popup()
             var polygon = L.polygon([
                 coordinates
             ]).addTo(map);
             try{
-                findInMap(coordinates2[0])
-                map2.setView(coordinates2[0], 15);
-                console.log(coordinates2[0]);
+
+                findInMap(coordinates2[0][0],coordinates2[0][1])
+
+                
             }catch{
                 try{
-                    findInMap(coordinates2[1])
-                    map2.setView(coordinates2[1], 15);
+                    findInMap(coordinates2[1][0],coordinates2[1][1])
+
                     console.log(coordinates2[1]);
                 }catch{
                     null
@@ -190,19 +229,19 @@ function checkB() {
             
 
             
-            var polygon = L.polygon([
-                coordinates
-            ]).addTo(map2);
-
-            openPopup()
+            
+            
             for (var i = allpKeys.length - 1; i >= 0; i--) {
                 current = allpKeys[i]
                 sonuc = document.getElementById("sonucText")
 
-                sonuc.innerHTML = sonuc.innerHTML + "<p>"+current+":"+allp[current]+"</p><hr>"
-
+                if (current.includes("Id") != true) {
+                    sonuc.innerHTML = sonuc.innerHTML + "<p class='result_'>"+current+":"+allp[current]+"</p>"
+                }
             }
+
         })
+
     }
 }
 
@@ -268,20 +307,22 @@ function getnh(){
 }
 
 opened_popup = 0
-function openPopup(){
+
+function open_Popup(){
+    
+
+
     if (opened_popup==0) {
+
         document.getElementById("sonuc").style.display = "";
         opened_popup = 1;
         document.getElementById("map").style.display = "none";
     }else{
         document.getElementById("sonuc").style.display = "none";
         opened_popup = 0;
+
+
         document.getElementById("map").style.display = "";
     }
 
 }
-/*
-L.marker([51.5, -0.09]).addTo(map)
-    .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-    .openPopup();
-*/

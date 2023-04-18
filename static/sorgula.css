@@ -10,6 +10,13 @@
     left: 0;
     top: 0;
   }
+  #printButton{
+    display: none;
+  }
+  #popupclosebuttoni{
+    display:none;
+  }
+
 }
 body{
     font-family: 'Schibsted Grotesk', sans-serif;
@@ -26,19 +33,12 @@ h2,i{
     margin-left:30px
 
 }
-#popup{
-    width:100%;
-    position: fixed;
-    top:0px;
-    height: 100vh;
-    left:0px;
-    background: white;
-}
+
 #sonuc{
-    position: fixed;
+    position: absolute;
     width: 100%;
     text-align: center;
-    height: 100vh;
+
     top:0px;
     left:0px;
     background: #fff;
@@ -72,4 +72,7 @@ input{
     margin-right: 5px;
 
     height: 30px;
+}
+.result{
+    margin-left:20px;
 }
